@@ -2,6 +2,7 @@ package com.example.webfluxflow.controller;
 
 import com.example.webfluxflow.dto.AllowUserResponse;
 import com.example.webfluxflow.dto.AllowedUserResponse;
+import com.example.webfluxflow.dto.RankNumberResponse;
 import com.example.webfluxflow.dto.RegisterUserResponse;
 import com.example.webfluxflow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,11 @@ public class UserQueueController {
                                                    @RequestParam(name = "user_id") Long userId){
         return userQueueService.isAllowed(queue, userId)
                 .map(AllowedUserResponse::new);
+    }
+    @GetMapping("/rank")
+    public Mono<RankNumberResponse> getRankUser(@RequestParam(name = "queue", defaultValue = "default") String queue,
+                                                @RequestParam(name = "user_id") Long userId){
+        return userQueueService.getRank(queue, userId)
+                .map(RankNumberResponse::new);
     }
 }

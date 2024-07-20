@@ -3,6 +3,7 @@ package com.example.webfluxflow.service;
 import com.example.webfluxflow.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -42,5 +43,16 @@ public class UserQueueService {
         return reactiveRedisTemplate.opsForZSet().rank(USER_QUEUE_PROCEED_KEY.formatted(queue), userId.toString())
                 .defaultIfEmpty( -1L)
                 .map(rank -> rank >= 0);
+    }
+
+    public Mono<Long> getRank(final String queue, final Long userId){
+        return reactiveRedisTemplate.opsForZSet().rank(USER_QUEUE_WAIT_KEY.formatted(queue), userId.toString())
+                .defaultIfEmpty(-1L)
+                .map(rank -> rank >= 0 ? rank + 1 : rank);
+    }
+
+    @Scheduled
+    public void scheduleAllowUser(){
+
     }
 }
