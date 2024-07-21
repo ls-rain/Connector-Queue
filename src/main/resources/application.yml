@@ -6,14 +6,10 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
-
+scheduler:
+  enabled: true
 ---
 spring:
-  task:
-    scheduling:
-      thread-name-prefix: "name"
-      pool:
-        size: 2
   config:
     activate:
       on-profile: test
@@ -21,3 +17,5 @@ spring:
     redis:
       host: 127.0.0.1
       port: 63790
+scheduler:
+  enabled: false
