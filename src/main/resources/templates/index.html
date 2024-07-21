@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>환영합니다</title>
     <meta charset="utf-8">
-    <title>접속자대기열시스템</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,49 +14,41 @@
             align-items: center;
             height: 100vh;
         }
-        .message {
+        .main-content {
             text-align: center;
-            padding: 20px;
+        }
+        .logo-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            margin-bottom: 20px;
+        }
+        .description {
             font-size: 18px;
-            background-color: #fff;
+            margin-bottom: 20px;
+        }
+        .cta-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-<div class="message">
-    <h1>접속량이 많습니다.</h1>
-    <span>현재 대기 순번 </span><span id="number">[[${number}]]</span><span> 입니다.</span>
-    <br/>
-    <p>서버의 접속량이 많아 시간이 걸릴 수 있습니다.</p>
-    <p>잠시만 기다려주세요.</p>
-    <p id="updated"></p>
-    <br/>
+<div class="main-content">
+    <h1>환영합니다</h1>
+    <p class="description">Redis는 key/value 기반의 In-memory 데이터 저장소로서, 빠른 읽기와 쓰기 속도를 제공하며 다양한 데이터 구조를 지원하여 복잡한 데이터 조작도 간단하게 처리할 수 있습니다.</p>
+    <p>Spring WebFlux는 Reactive Streams을 기반으로 하여 요청에 대한 응답을 비동기적으로 처리하며, 논블로킹 I/O 모델을 활용하여 높은 성능과 확장성을 제공합니다.</p>
+    <button class="cta-button">자세히 알아보기</button>
 </div>
-<script>
-    function fetchWaitingRank() {
-        const queue = '[[${queue}]]';
-        const userId = '[[${userId}]]';
-        const queryParam = new URLSearchParams({queue: queue, user_id: userId});
-        fetch('/api/v1/queue/rank?' + queryParam)
-            .then(response => response.json())
-            .then(data => {
-                if(data.rank < 0) {
-                    document.querySelector('#number').innerHTML = 0;
-                    document.querySelector('#updated').innerHTML = new Date();
-
-                    const newUrl = window.location.origin + window.location.pathname + window.location.search;
-                    window.location.href = newUrl;
-                    return;
-                }
-                document.querySelector('#number').innerHTML = data.rank;
-                document.querySelector('#updated').innerHTML = new Date();
-            })
-            .catch(error => console.error(error));
-    }
-
-    setInterval(fetchWaitingRank, 3000);
-</script>
 </body>
 </html>
