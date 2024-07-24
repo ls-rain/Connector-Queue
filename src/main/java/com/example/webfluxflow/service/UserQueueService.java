@@ -94,7 +94,7 @@ public class UserQueueService {
             return;
         }
         log.info("Scheduled allow user queue");
-        Long maxAllowUserCount = 3L;
+        Long maxAllowUserCount = 100L;
 
         reactiveRedisTemplate.
                 scan(ScanOptions.scanOptions()

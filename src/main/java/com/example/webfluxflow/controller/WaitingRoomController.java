@@ -22,7 +22,7 @@ public class WaitingRoomController {
                                     ServerWebExchange exchange) {
         String key = "user-queue-%s-token".formatted(queue);
         HttpCookie cookieValue = exchange.getRequest().getCookies().getFirst(key);
-        String token = cookieValue == null ? "" : cookieValue.getValue();
+        String token = (cookieValue == null) ? "" : cookieValue.getValue();
 
         return userQueueService.isAllowedByToken(queue, userId, token)
                 .filter(allowed -> allowed)
